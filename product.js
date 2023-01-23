@@ -34,6 +34,7 @@ createApp({
           window.location='index.html'
         })
     },
+    //開啟 刪除modal視窗
     openDeleteData(){
       delModal.show();
     },
@@ -55,14 +56,26 @@ createApp({
     },
     //新增、更新產品
     updateProduct(){
-      const url = `${apiUrl}v2/api/${apiPath}/admin/product`
-      axios.post(url,{ data:this.tempProduct })
+      let url = `${apiUrl}v2/api/${apiPath}/admin/product`
+      let method = 'post';
+
+      if(!this.isNew){
+        url = `${apiUrl}v2/api/${apiPath}/admin/product/${this.tempProduct.id}`
+        method = 'put';
+      }
+      axios[method](url,{ data:this.tempProduct })
         .then(res => {
           this.getData();
           productModal.hide();
         })
         .catch(err =>console.log(err.data.message))
 
+    },
+    deleteProduct(){
+      const url = `${apiUrl}v2/api/${apiPath}/admin/product/${this.tempProduct.id}`
+      axios.delete(url)
+        .then(res => console.log(res))
+        .catch(err => console.log(err.data.message))
     }
   },
   mounted() {
