@@ -35,8 +35,9 @@ createApp({
         })
     },
     //開啟 刪除modal視窗
-    openDeleteData(){
-      delModal.show();
+    openDeleteData(product){
+      delModal.show(); 
+      this.tempProduct = {...product};
     },
     //開啟 新增modal視窗
     openModal(status , product){
@@ -74,7 +75,10 @@ createApp({
     deleteProduct(){
       const url = `${apiUrl}v2/api/${apiPath}/admin/product/${this.tempProduct.id}`
       axios.delete(url)
-        .then(res => console.log(res))
+        .then(res => {
+          this.getData();
+          delModal.hide();          
+        })
         .catch(err => console.log(err.data.message))
     }
   },
